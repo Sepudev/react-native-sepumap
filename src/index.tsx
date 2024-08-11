@@ -1,22 +1,18 @@
-import { NativeModules, Platform } from 'react-native';
+import {
+  requireNativeComponent,
+  UIManager,
+  type ViewStyle,
+} from 'react-native';
 
-const LINKING_ERROR =
-  `The package 'react-native-sepumap' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-const Sepumap = NativeModules.Sepumap
-  ? NativeModules.Sepumap
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return Sepumap.multiply(a, b);
+interface SepumapViewProps {
+  style: ViewStyle;
 }
+
+const ComponentName = 'SepumapView';
+
+export const SepumapView =
+  UIManager.getViewManagerConfig(ComponentName) != null
+    ? requireNativeComponent<SepumapViewProps>(ComponentName)
+    : () => {
+        throw new Error('No link');
+      };
