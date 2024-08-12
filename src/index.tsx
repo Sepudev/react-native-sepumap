@@ -7,6 +7,7 @@ import {
 interface Marker {
   latitude: number;
   longitude: number;
+  title: string;
 }
 interface SepumapViewProps {
   style: ViewStyle;
