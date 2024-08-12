@@ -1,6 +1,6 @@
 {
   "name": "react-native-sepumap",
-  "version": "0.1.17",
+  "version": "0.1.19",
   "description": "React native map",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
