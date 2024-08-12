@@ -23,6 +23,7 @@ class SepumapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     private var markers: List<MarkerData> = emptyList()
     private var reactContext: ReactContext? = null
+    private var selectedMarker: Marker? = null
 
     override fun getName(): String {
         return "SepumapView"
@@ -41,6 +42,9 @@ class SepumapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback {
         this.googleMap = googleMap
 
         googleMap.setOnMarkerClickListener { marker ->
+            selectedMarker?.hideInfoWindow()
+            selectedMarker = marker
+            marker.showInfoWindow() 
             sendMarkerClickEvent(marker)
             true
         }
@@ -50,9 +54,11 @@ class SepumapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback {
         }
 
         for (markerData in markers) {
-            googleMap.addMarker(MarkerOptions()
-                .position(markerData.latLng)
-                .title(markerData.title)
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(markerData.latLng)
+                    .title(markerData.title)
+                    .snippet("📍") 
             )
         }
     }
@@ -88,10 +94,13 @@ class SepumapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback {
 
         googleMap?.let { map ->
             map.clear()
+            selectedMarker = null
             for (markerData in markerDataList) {
-                map.addMarker(MarkerOptions()
-                    .position(markerData.latLng)
-                    .title(markerData.title)
+                map.addMarker(
+                    MarkerOptions()
+                        .position(markerData.latLng)
+                        .title(markerData.title)
+                        .snippet("📍")
                 )
             }
 
